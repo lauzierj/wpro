@@ -13,7 +13,12 @@ class WPRO_Url {
 	// Returns the URL to an attachment. $file can be a URL or a file path.
 	function attachmentUrl($file) {
 		$baseurl = apply_filters('wpro_backend_retrieval_baseurl', '');
-		return rtrim($baseurl, '/') . '/' . ltrim($this->relativePath($file), '/');
+        $baseurl = rtrim($baseurl, '/') . '/';
+
+        if(wpro()->options->get_option('wpro-mu-subdirs'))
+            $baseurl = $baseurl . get_current_blog_id() . '/';
+
+		return $baseurl . ltrim($this->relativePath($file), '/');
 	}
 
 	// Returns a temporary location in the filesystem, where we can store the file during the current request.
@@ -25,10 +30,12 @@ class WPRO_Url {
 
 	// Returns the relative part (the ending) of a url or file path.
 	function relativePath($url) {
-		$file = explode('/', $url);
-		$parts = count($file);
-		$file = $file[$parts - 3] . '/' . $file[$parts - 2] . '/' . $file[$parts - 1];
-		return $file;
+        $file = $url;
+        if(strpos($url, 'http://') > -1) {
+            $file = str_replace('http://', '', $url);
+            $file = substr($file, strpos($file, '/') + 1);
+        }
+        return $file;
 	}
 
 	function upload_dir($data) {
@@ -38,6 +45,9 @@ class WPRO_Url {
 		if (is_null($backend)) return $log->logreturn($data);
 
 		$baseurl = trim(apply_filters('wpro_backend_retrieval_baseurl', $data['baseurl']), '/');
+
+        if(wpro()->options->get_option('wpro-mu-subdirs'))
+            $baseurl = $baseurl . '/' . get_current_blog_id();
 
 		return $log->logreturn(array(
 			'path' => wpro()->tmpdir->reqTmpDir() . $data['subdir'],
