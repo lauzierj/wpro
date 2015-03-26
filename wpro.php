@@ -20,6 +20,7 @@ class WPRO_Core {
 
 	function construct_singleton() { // Instead of __construct().
 
+        require_once(dirname(__FILE__) . '/vendor/tpyo/amazon-s3-php-class/S3.php');
 		require_once(dirname(__FILE__) . '/src/admin.php');
 		require_once(dirname(__FILE__) . '/src/backend-fs.php');
 		require_once(dirname(__FILE__) . '/src/backend-s3.php');
@@ -29,6 +30,7 @@ class WPRO_Core {
 		require_once(dirname(__FILE__) . '/src/debug.php');
 		require_once(dirname(__FILE__) . '/src/edit.php');
 		require_once(dirname(__FILE__) . '/src/gravityforms.php');
+        require_once(dirname(__FILE__) . '/src/formidable.php');
 		require_once(dirname(__FILE__) . '/src/http.php');
 		require_once(dirname(__FILE__) . '/src/options.php');
 		require_once(dirname(__FILE__) . '/src/tmpdir.php');

@@ -9,5 +9,8 @@
 		"phpunit/phpunit": "*",
 		"wp-cli/wp-cli": "*",
 		"wpreadme2markdown/wpreadme2markdown": "*"
-	}
+	},
+    "require": {
+        "tpyo/amazon-s3-php-class": "v0.5.0"
+    }
 }

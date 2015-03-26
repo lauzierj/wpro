@@ -31,8 +31,9 @@ class WPRO_Url {
 	// Returns the relative part (the ending) of a url or file path.
 	function relativePath($url) {
         $file = $url;
-        if(strpos($url, 'http://') > -1) {
+        if ((substr($url, 0, 7) == 'http://') || (substr($url, 0, 8) == 'https://')) {
             $file = str_replace('http://', '', $url);
+            $file = str_replace('https://', '', $url);
             $file = substr($file, strpos($file, '/') + 1);
         }
         return $file;

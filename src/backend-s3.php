@@ -30,6 +30,7 @@ class WPRO_Backend_S3 {
 		wpro()->options->register('wpro-aws-endpoint');
 		wpro()->options->register('wpro-aws-ssl');
 
+        add_filter('wpro_backend_delete_file', array($this, 'delete_file'));
 		add_filter('wpro_backend_store_file', array($this, 'store_file'));
 		add_filter('wpro_backend_retrieval_baseurl', array($this, 'url'));
 
@@ -115,6 +116,17 @@ class WPRO_Backend_S3 {
 
 		return $log->logreturn(true);
 	}
+
+    function delete_file($url) {
+        $path = wpro()->url->relativePath($url);
+        $bucket = wpro()->options->get('wpro-aws-bucket');
+
+        $s3 = new S3(wpro()->options->get_option('wpro-aws-key'), wpro()->options->get_option('wpro-aws-secret'));
+        if($s3->deleteObject($bucket, $path))
+            error_log('success');
+        else
+            error_log('failure');
+    }
 
 	function store_file($data) {
 		$log = wpro()->debug->logblock('WPRO_Backend_S3::store_file($data)');

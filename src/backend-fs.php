@@ -24,6 +24,7 @@ class WPRO_Backend_Filesystem {
 		wpro()->options->register('wpro-fs-path');
 		wpro()->options->register('wpro-fs-baseurl');
 
+        add_filter('wpro_backend_delete_file', array($this, 'delete_file'));
 		add_filter('wpro_backend_file_exists', array($this, 'file_exists'), 10, 2);
 		add_filter('wpro_backend_store_file', array($this, 'store_file'));
 		add_filter('wpro_backend_retrieval_baseurl', array($this, 'url'));
@@ -63,6 +64,10 @@ class WPRO_Backend_Filesystem {
 		<?php
 		return $log->logreturn(true);
 	}
+
+    function delete_file($path) {
+        error_log($path);
+    }
 
 	function file_exists($exists, $url) {
 		$log = wpro()->debug->logblock('WPRO_Backend_Filesystem::file_exists($exists, $url = "' . $url . '")');

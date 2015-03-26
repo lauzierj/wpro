@@ -9,6 +9,8 @@ class WPRO_Uploads {
 	function __construct() {
 		$log = wpro()->debug->logblock('WPRO_Uploads::__construct()');
 
+        add_filter('wp_delete_file', array($this, 'handle_delete'));
+
 		add_filter('wp_handle_upload', array($this, 'handle_upload'));
 		add_filter('wp_generate_attachment_metadata', array($this, 'generate_attachment_metadata')); // We use this filter to store resized versions of the images.
 		add_filter('wp_update_attachment_metadata', array($this, 'update_attachment_metadata')); // We use this filter to store resized versions of the images.
@@ -37,6 +39,13 @@ class WPRO_Uploads {
 
 		return $log->logreturn(true);
 	}
+
+    function handle_delete($file) {
+        $file = ltrim($file, wpro()->tmpdir->reqTmpDir());
+        $file = wpro()->url->attachmentUrl($file);
+
+        apply_filters('wpro_backend_delete_file', $file);
+    }
 
 	function handle_upload($data) {
 		$log = wpro()->debug->logblock('WPRO_Uploads::handle_upload()');
