@@ -122,10 +122,7 @@ class WPRO_Backend_S3 {
         $bucket = wpro()->options->get('wpro-aws-bucket');
 
         $s3 = new S3(wpro()->options->get_option('wpro-aws-key'), wpro()->options->get_option('wpro-aws-secret'));
-        if($s3->deleteObject($bucket, $path))
-            error_log('success');
-        else
-            error_log('failure');
+        $s3->deleteObject($bucket, $path);
     }
 
 	function store_file($data) {

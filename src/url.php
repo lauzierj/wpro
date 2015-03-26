@@ -32,8 +32,8 @@ class WPRO_Url {
 	function relativePath($url) {
         $file = $url;
         if ((substr($url, 0, 7) == 'http://') || (substr($url, 0, 8) == 'https://')) {
-            $file = str_replace('http://', '', $url);
-            $file = str_replace('https://', '', $url);
+            $file = str_replace('http://', '', $file);
+            $file = str_replace('https://', '', $file);
             $file = substr($file, strpos($file, '/') + 1);
         }
         return $file;
